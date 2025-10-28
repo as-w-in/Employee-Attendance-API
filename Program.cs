@@ -1,7 +1,6 @@
 // Program.cs
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api_demo.Data; // CHANGE THIS IF YOUR NAMESPACE IS DIFFERENT
+using api_demo.Data; // THIS WAS MISSING!
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +14,7 @@ var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__De
 if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();
@@ -31,7 +30,7 @@ app.MapControllers();
 if (app.Environment.IsProduction())
 {
     using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
