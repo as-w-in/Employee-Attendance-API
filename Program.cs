@@ -1,36 +1,28 @@
-// Program.cs
 using Microsoft.EntityFrameworkCore;
 using api_demo.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services
 builder.Services.AddControllers();
 
-// GET CONNECTION STRING FROM RENDER (PRIORITY) OR LOCAL
+// READ FROM RENDER ENV VAR
 var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
                        ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
-    throw new InvalidOperationException("Database connection string is missing!");
+    throw new InvalidOperationException("Database connection string is missing! Check Render Environment Variables.");
 
-// Configure DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
-// SERVE FRONTEND (wwwroot)
-app.UseDefaultFiles();   // Serves index.html
-app.UseStaticFiles();    // Serves CSS, JS, images
-
-// Middleware
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 
-// AUTO APPLY MIGRATIONS IN PRODUCTION
 if (app.Environment.IsProduction())
 {
     using var scope = app.Services.CreateScope();
