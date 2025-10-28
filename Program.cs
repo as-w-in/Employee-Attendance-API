@@ -5,49 +5,35 @@ using Npgsql;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
-// ✅ 1. Try to read DATABASE_URL from Render
-string? rawUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-string? connectionString = null;
+// Read connection string (Render env var)
+var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
+            ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
-if (!string.IsNullOrEmpty(rawUrl))
+if (string.IsNullOrEmpty(dbUrl))
+    throw new InvalidOperationException("DATABASE_URL environment variable is missing!");
+
+// Convert the URL-style connection string to Npgsql format
+var databaseUri = new Uri(dbUrl);
+var userInfo = databaseUri.UserInfo.Split(':');
+var username = userInfo[0];
+var password = userInfo.Length > 1 ? userInfo[1] : "";
+var host = databaseUri.Host;
+var port = databaseUri.Port > 0 ? databaseUri.Port : 5432;
+var database = databaseUri.LocalPath.TrimStart('/');
+
+// Build a proper Npgsql connection string
+var npgsqlBuilder = new NpgsqlConnectionStringBuilder
 {
-    try
-    {
-        // Handle both “postgres://” and “postgresql://” URLs
-        if (rawUrl.StartsWith("postgres://"))
-            rawUrl = rawUrl.Replace("postgres://", "postgresql://");
+    Host = host,
+    Port = port,
+    Username = username,
+    Password = password,
+    Database = database,
+    SslMode = SslMode.Require,
+    TrustServerCertificate = true
+};
 
-        var uri = new Uri(rawUrl);
-        var userInfo = uri.UserInfo.Split(':');
-
-        var builderPg = new NpgsqlConnectionStringBuilder
-        {
-            Host = uri.Host,
-            Port = uri.Port > 0 ? uri.Port : 5432,
-            Username = userInfo[0],
-            Password = userInfo.Length > 1 ? userInfo[1] : "",
-            Database = uri.LocalPath.TrimStart('/'),
-            SslMode = SslMode.Require,
-            TrustServerCertificate = true
-        };
-
-        connectionString = builderPg.ConnectionString;
-        Console.WriteLine("✅ Parsed connection string: " + connectionString);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("❌ Error parsing DATABASE_URL: " + ex.Message);
-    }
-}
-else
-{
-    // ✅ 2. Fallback to local appsettings.json
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine("✅ Using local DefaultConnection");
-}
-
-if (string.IsNullOrEmpty(connectionString))
-    throw new InvalidOperationException("❌ Database connection string is missing! Check Render Environment Variables.");
+var connectionString = npgsqlBuilder.ConnectionString;
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -60,9 +46,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
-
-// ✅ Optional root route for testing
-app.MapGet("/", () => "✅ API and Database Connected!");
 
 if (app.Environment.IsProduction())
 {
