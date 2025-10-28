@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Hash": "vnEOLmese3Dbi+uUTiXPSscaStlrogvhPdiJUI/0mMc=",
+  "Source": "api-demo",
+  "BasePath": "_content/api-demo",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "api-demo\\wwwroot",
+      "Source": "api-demo",
+      "ContentRoot": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\",
+      "BasePath": "_content/api-demo",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\index.html",
+      "SourceId": "api-demo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\",
+      "BasePath": "_content/api-demo",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\script.js",
+      "SourceId": "api-demo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\",
+      "BasePath": "_content/api-demo",
+      "RelativePath": "script.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\script.js"
+    },
+    {
+      "Identity": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\style.css",
+      "SourceId": "api-demo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\aswin\\Desktop\\projects\\DotNetLearning\\api-demo\\wwwroot\\",
+      "BasePath": "_content/api-demo",
+      "RelativePath": "style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\style.css"
+    }
+  ]
+}

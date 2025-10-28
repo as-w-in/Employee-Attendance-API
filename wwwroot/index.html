@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Employee Manager</h1>
+
+  <div class="form-container">
+    <input id="name" placeholder="Name" />
+    <input id="department" placeholder="Department" />
+    <input id="salary" placeholder="Salary per day" type="number" />
+    <button id="addBtn">Add Employee</button>
+    <button id="updateBtn" style="display:none;">Update Employee</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Department</th><th>Salary</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="employeeTable"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>

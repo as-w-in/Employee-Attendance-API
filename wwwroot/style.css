@@ -1,0 +1,67 @@
+body {
+  font-family: system-ui, sans-serif;
+  padding: 20px;
+  background: #f9fafb;
+  color: #333;
+}
+
+h1 {
+  color: #222;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background: #0078d7;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005fa3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+th {
+  background: #f3f4f6;
+}
+
+.action-btn {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.action-btn.edit {
+  background: #00b300;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
+}
