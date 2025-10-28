@@ -1,6 +1,7 @@
 bin/
 obj/
-*.db
-*.log
-.vscode/
-.git/
+*.csproj.user
+*.vs
+*.vscode
+appsettings.json
+appsettings.*.json
