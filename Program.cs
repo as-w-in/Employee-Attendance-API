@@ -1,36 +1,49 @@
 using Microsoft.EntityFrameworkCore;
 using api_demo.Data;
 using Npgsql;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
-// ✅ Convert Render-style DATABASE_URL to standard format
+// ✅ 1. Try to read DATABASE_URL from Render
 string? rawUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-string? connectionString;
+string? connectionString = null;
 
 if (!string.IsNullOrEmpty(rawUrl))
 {
-    var databaseUri = new Uri(rawUrl);
-    var userInfo = databaseUri.UserInfo.Split(':');
-
-    var builderPg = new NpgsqlConnectionStringBuilder
+    try
     {
-        Host = databaseUri.Host,
-        Port = databaseUri.Port,
-        Username = userInfo[0],
-        Password = userInfo[1],
-        Database = databaseUri.LocalPath.TrimStart('/'),
-        SslMode = SslMode.Require,
-        TrustServerCertificate = true
-    };
+        // Handle both “postgres://” and “postgresql://” URLs
+        if (rawUrl.StartsWith("postgres://"))
+            rawUrl = rawUrl.Replace("postgres://", "postgresql://");
 
-    connectionString = builderPg.ToString();
+        var uri = new Uri(rawUrl);
+        var userInfo = uri.UserInfo.Split(':');
+
+        var builderPg = new NpgsqlConnectionStringBuilder
+        {
+            Host = uri.Host,
+            Port = uri.Port > 0 ? uri.Port : 5432,
+            Username = userInfo[0],
+            Password = userInfo.Length > 1 ? userInfo[1] : "",
+            Database = uri.LocalPath.TrimStart('/'),
+            SslMode = SslMode.Require,
+            TrustServerCertificate = true
+        };
+
+        connectionString = builderPg.ConnectionString;
+        Console.WriteLine("✅ Parsed connection string: " + connectionString);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("❌ Error parsing DATABASE_URL: " + ex.Message);
+    }
 }
 else
 {
+    // ✅ 2. Fallback to local appsettings.json
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine("✅ Using local DefaultConnection");
 }
 
 if (string.IsNullOrEmpty(connectionString))
@@ -47,6 +60,9 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
+
+// ✅ Optional root route for testing
+app.MapGet("/", () => "✅ API and Database Connected!");
 
 if (app.Environment.IsProduction())
 {
