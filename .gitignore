@@ -1,0 +1,17 @@
+#.NET - NEVER COMMIT THESE
+bin/
+obj/
+*.csproj.user
+*.suo 
+*.user
+*.userosscache
+*.sln.docstates
+
+#VS Code
+.vscode/
+
+#Logs
+*.log
+
+# Keep wwwroot!
+!wwwroot/**
